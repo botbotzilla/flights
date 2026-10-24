@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-10-24T14:07:53.821Z",
+  "generatedAt": "2026-10-24T14:44:20.386Z",
   "sample": false,
   "config": {
     "from": "SYD",
     "to": "SIN",
     "outbound": {
       "start": "2026-11-23",
-      "end": "2026-11-23"
+      "end": "2026-11-24"
     },
     "return": {
       "start": "2026-12-31",
@@ -16,6 +16,11 @@
     "children": 0,
     "currency": "AUD",
     "stops": 2,
+    "travelClass": 1,
+    "airlines": {
+      "mode": "any",
+      "codes": []
+    },
     "maxPrice": 3000,
     "maxDuration": 900,
     "layover": {
@@ -23,31 +28,31 @@
       "max": 300
     },
     "outboundTimes": {
-      "depFrom": null,
-      "depTo": null,
-      "arrFrom": null,
+      "depFrom": 6,
+      "depTo": 18,
+      "arrFrom": 14,
       "arrTo": null
     },
     "returnTimes": {
-      "depFrom": null,
-      "depTo": null,
-      "arrFrom": null,
-      "arrTo": null
+      "depFrom": 6,
+      "depTo": 12,
+      "arrFrom": 14,
+      "arrTo": 23
     },
     "maxCalls": 5,
-    "topN": 5
+    "topN": 20
   },
   "counts": {
-    "pairs": 2,
-    "calls": 2,
-    "options": 18,
-    "passing": 12
+    "pairs": 4,
+    "calls": 4,
+    "options": 11,
+    "passing": 5
   },
   "results": [
     {
-      "outbound_date": "2026-11-23",
+      "outbound_date": "2026-11-24",
       "return_date": "2026-12-31",
-      "price": 1665,
+      "price": 1785,
       "total_minutes": 495,
       "stops": 0,
       "layovers": [],
@@ -55,20 +60,21 @@
         {
           "from": "SYD",
           "to": "SIN",
-          "dep": "2026-11-23 20:05",
-          "arr": "2026-11-24 01:20",
+          "dep": "2026-11-24 13:25",
+          "arr": "2026-11-24 18:40",
           "airline": "Scoot",
-          "flight": "TR 43",
+          "flight": "TR 41",
+          "cabin": "Economy",
           "minutes": 495
         }
       ],
-      "link": "https://www.google.com/travel/flights?hl=en&gl=us&curr=AUD&tfs=CBwQAhoqEgoyMDI2LTExLTIzKAFghAdqBwgBEgNTWURyBwgBEgNTSU6IAQCQAawCGioSCjIwMjYtMTItMzEoAWCEB2oHCAESA1NJTnIHCAESA1NZRIgBAJABrAJAAUABSAFguBdwAZgBAQ&tfu=EgIIAQ",
+      "link": "https://www.google.com/travel/flights?hl=en&gl=us&curr=AUD&tfs=CBwQAhoyEgoyMDI2LTExLTI0KAFABkgSUA5YF2CEB2oHCAESA1NZRHIHCAESA1NJTogBAJABrAIaMhIKMjAyNi0xMi0zMSgBQAZIDFAOWBdghAdqBwgBEgNTSU5yBwgBEgNTWUSIAQCQAawCQAFAAUgBYLgXcAGYAQE&tfu=EgIIAQ",
       "issues": []
     },
     {
-      "outbound_date": "2026-11-23",
+      "outbound_date": "2026-11-24",
       "return_date": "2027-01-01",
-      "price": 1791,
+      "price": 2015,
       "total_minutes": 495,
       "stops": 0,
       "layovers": [],
@@ -76,41 +82,43 @@
         {
           "from": "SYD",
           "to": "SIN",
-          "dep": "2026-11-23 20:05",
-          "arr": "2026-11-24 01:20",
+          "dep": "2026-11-24 13:25",
+          "arr": "2026-11-24 18:40",
           "airline": "Scoot",
-          "flight": "TR 43",
+          "flight": "TR 41",
+          "cabin": "Economy",
           "minutes": 495
         }
       ],
-      "link": "https://www.google.com/travel/flights?hl=en&gl=us&curr=AUD&tfs=CBwQAhoqEgoyMDI2LTExLTIzKAFghAdqBwgBEgNTWURyBwgBEgNTSU6IAQCQAawCGioSCjIwMjctMDEtMDEoAWCEB2oHCAESA1NJTnIHCAESA1NZRIgBAJABrAJAAUABSAFguBdwAZgBAQ&tfu=EgIIAQ",
+      "link": "https://www.google.com/travel/flights?hl=en&gl=us&curr=AUD&tfs=CBwQAhoyEgoyMDI2LTExLTI0KAFABkgSUA5YF2CEB2oHCAESA1NZRHIHCAESA1NJTogBAJABrAIaMhIKMjAyNy0wMS0wMSgBQAZIDFAOWBdghAdqBwgBEgNTSU5yBwgBEgNTWUSIAQCQAawCQAFAAUgBYLgXcAGYAQE&tfu=EgIIAQ",
       "issues": []
     },
     {
       "outbound_date": "2026-11-23",
       "return_date": "2026-12-31",
-      "price": 2274,
-      "total_minutes": 485,
+      "price": 2330,
+      "total_minutes": 490,
       "stops": 0,
       "layovers": [],
       "legs": [
         {
           "from": "SYD",
           "to": "SIN",
-          "dep": "2026-11-23 16:20",
-          "arr": "2026-11-23 21:25",
-          "airline": "British Airways",
-          "flight": "BA 16",
-          "minutes": 485
+          "dep": "2026-11-23 15:50",
+          "arr": "2026-11-23 21:00",
+          "airline": "Singapore Airlines",
+          "flight": "SQ 222",
+          "cabin": "Economy",
+          "minutes": 490
         }
       ],
-      "link": "https://www.google.com/travel/flights?hl=en&gl=us&curr=AUD&tfs=CBwQAhoqEgoyMDI2LTExLTIzKAFghAdqBwgBEgNTWURyBwgBEgNTSU6IAQCQAawCGioSCjIwMjYtMTItMzEoAWCEB2oHCAESA1NJTnIHCAESA1NZRIgBAJABrAJAAUABSAFguBdwAZgBAQ&tfu=EgIIAQ",
+      "link": "https://www.google.com/travel/flights?hl=en&gl=us&curr=AUD&tfs=CBwQAhoyEgoyMDI2LTExLTIzKAFABkgSUA5YF2CEB2oHCAESA1NZRHIHCAESA1NJTogBAJABrAIaMhIKMjAyNi0xMi0zMSgBQAZIDFAOWBdghAdqBwgBEgNTSU5yBwgBEgNTWUSIAQCQAawCQAFAAUgBYLgXcAGYAQE&tfu=EgIIAQ",
       "issues": []
     },
     {
       "outbound_date": "2026-11-23",
       "return_date": "2026-12-31",
-      "price": 2358,
+      "price": 2499,
       "total_minutes": 500,
       "stops": 0,
       "layovers": [],
@@ -118,36 +126,198 @@
         {
           "from": "SYD",
           "to": "SIN",
-          "dep": "2026-11-23 16:10",
-          "arr": "2026-11-23 21:30",
-          "airline": "Qantas",
-          "flight": "QF 255",
+          "dep": "2026-11-23 12:15",
+          "arr": "2026-11-23 17:35",
+          "airline": "Singapore Airlines",
+          "flight": "SQ 232",
+          "cabin": "Economy",
           "minutes": 500
         }
       ],
-      "link": "https://www.google.com/travel/flights?hl=en&gl=us&curr=AUD&tfs=CBwQAhoqEgoyMDI2LTExLTIzKAFghAdqBwgBEgNTWURyBwgBEgNTSU6IAQCQAawCGioSCjIwMjYtMTItMzEoAWCEB2oHCAESA1NJTnIHCAESA1NZRIgBAJABrAJAAUABSAFguBdwAZgBAQ&tfu=EgIIAQ",
+      "link": "https://www.google.com/travel/flights?hl=en&gl=us&curr=AUD&tfs=CBwQAhoyEgoyMDI2LTExLTIzKAFABkgSUA5YF2CEB2oHCAESA1NZRHIHCAESA1NJTogBAJABrAIaMhIKMjAyNi0xMi0zMSgBQAZIDFAOWBdghAdqBwgBEgNTSU5yBwgBEgNTWUSIAQCQAawCQAFAAUgBYLgXcAGYAQE&tfu=EgIIAQ",
       "issues": []
     },
     {
       "outbound_date": "2026-11-23",
       "return_date": "2026-12-31",
-      "price": 2358,
-      "total_minutes": 485,
+      "price": 2974,
+      "total_minutes": 705,
+      "stops": 1,
+      "layovers": [
+        {
+          "airport": "KUL",
+          "minutes": 100,
+          "overnight": false
+        }
+      ],
+      "legs": [
+        {
+          "from": "SYD",
+          "to": "KUL",
+          "dep": "2026-11-23 11:50",
+          "arr": "2026-11-23 17:45",
+          "airline": "Malaysia Airlines",
+          "flight": "MH 122",
+          "cabin": "Economy",
+          "minutes": 535
+        },
+        {
+          "from": "KUL",
+          "to": "SIN",
+          "dep": "2026-11-23 19:25",
+          "arr": "2026-11-23 20:35",
+          "airline": "Malaysia Airlines",
+          "flight": "MH 607",
+          "cabin": "Economy",
+          "minutes": 70
+        }
+      ],
+      "link": "https://www.google.com/travel/flights?hl=en&gl=us&curr=AUD&tfs=CBwQAhoyEgoyMDI2LTExLTIzKAFABkgSUA5YF2CEB2oHCAESA1NZRHIHCAESA1NJTogBAJABrAIaMhIKMjAyNi0xMi0zMSgBQAZIDFAOWBdghAdqBwgBEgNTSU5yBwgBEgNTWUSIAQCQAawCQAFAAUgBYLgXcAGYAQE&tfu=EgIIAQ",
+      "issues": []
+    },
+    {
+      "outbound_date": "2026-11-23",
+      "return_date": "2027-01-01",
+      "price": null,
+      "total_minutes": 500,
       "stops": 0,
       "layovers": [],
       "legs": [
         {
           "from": "SYD",
           "to": "SIN",
-          "dep": "2026-11-23 16:30",
-          "arr": "2026-11-23 21:35",
-          "airline": "Qantas",
-          "flight": "QF 1",
-          "minutes": 485
+          "dep": "2026-11-23 12:15",
+          "arr": "2026-11-23 17:35",
+          "airline": "Singapore Airlines",
+          "flight": "SQ 232",
+          "cabin": "Economy",
+          "minutes": 500
         }
       ],
-      "link": "https://www.google.com/travel/flights?hl=en&gl=us&curr=AUD&tfs=CBwQAhoqEgoyMDI2LTExLTIzKAFghAdqBwgBEgNTWURyBwgBEgNTSU6IAQCQAawCGioSCjIwMjYtMTItMzEoAWCEB2oHCAESA1NJTnIHCAESA1NZRIgBAJABrAJAAUABSAFguBdwAZgBAQ&tfu=EgIIAQ",
-      "issues": []
+      "link": "https://www.google.com/travel/flights?hl=en&gl=us&curr=AUD&tfs=CBwQAhoyEgoyMDI2LTExLTIzKAFABkgSUA5YF2CEB2oHCAESA1NZRHIHCAESA1NJTogBAJABrAIaMhIKMjAyNy0wMS0wMSgBQAZIDFAOWBdghAdqBwgBEgNTSU5yBwgBEgNTWUSIAQCQAawCQAFAAUgBYLgXcAGYAQE&tfu=EgIIAQ",
+      "issues": [
+        "no price returned"
+      ]
+    },
+    {
+      "outbound_date": "2026-11-23",
+      "return_date": "2027-01-01",
+      "price": null,
+      "total_minutes": 490,
+      "stops": 0,
+      "layovers": [],
+      "legs": [
+        {
+          "from": "SYD",
+          "to": "SIN",
+          "dep": "2026-11-23 15:50",
+          "arr": "2026-11-23 21:00",
+          "airline": "Singapore Airlines",
+          "flight": "SQ 222",
+          "cabin": "Economy",
+          "minutes": 490
+        }
+      ],
+      "link": "https://www.google.com/travel/flights?hl=en&gl=us&curr=AUD&tfs=CBwQAhoyEgoyMDI2LTExLTIzKAFABkgSUA5YF2CEB2oHCAESA1NZRHIHCAESA1NJTogBAJABrAIaMhIKMjAyNy0wMS0wMSgBQAZIDFAOWBdghAdqBwgBEgNTSU5yBwgBEgNTWUSIAQCQAawCQAFAAUgBYLgXcAGYAQE&tfu=EgIIAQ",
+      "issues": [
+        "no price returned"
+      ]
+    },
+    {
+      "outbound_date": "2026-11-24",
+      "return_date": "2026-12-31",
+      "price": null,
+      "total_minutes": 500,
+      "stops": 0,
+      "layovers": [],
+      "legs": [
+        {
+          "from": "SYD",
+          "to": "SIN",
+          "dep": "2026-11-24 12:15",
+          "arr": "2026-11-24 17:35",
+          "airline": "Singapore Airlines",
+          "flight": "SQ 232",
+          "cabin": "Economy",
+          "minutes": 500
+        }
+      ],
+      "link": "https://www.google.com/travel/flights?hl=en&gl=us&curr=AUD&tfs=CBwQAhoyEgoyMDI2LTExLTI0KAFABkgSUA5YF2CEB2oHCAESA1NZRHIHCAESA1NJTogBAJABrAIaMhIKMjAyNi0xMi0zMSgBQAZIDFAOWBdghAdqBwgBEgNTSU5yBwgBEgNTWUSIAQCQAawCQAFAAUgBYLgXcAGYAQE&tfu=EgIIAQ",
+      "issues": [
+        "no price returned"
+      ]
+    },
+    {
+      "outbound_date": "2026-11-24",
+      "return_date": "2026-12-31",
+      "price": null,
+      "total_minutes": 490,
+      "stops": 0,
+      "layovers": [],
+      "legs": [
+        {
+          "from": "SYD",
+          "to": "SIN",
+          "dep": "2026-11-24 15:50",
+          "arr": "2026-11-24 21:00",
+          "airline": "Singapore Airlines",
+          "flight": "SQ 222",
+          "cabin": "Economy",
+          "minutes": 490
+        }
+      ],
+      "link": "https://www.google.com/travel/flights?hl=en&gl=us&curr=AUD&tfs=CBwQAhoyEgoyMDI2LTExLTI0KAFABkgSUA5YF2CEB2oHCAESA1NZRHIHCAESA1NJTogBAJABrAIaMhIKMjAyNi0xMi0zMSgBQAZIDFAOWBdghAdqBwgBEgNTSU5yBwgBEgNTWUSIAQCQAawCQAFAAUgBYLgXcAGYAQE&tfu=EgIIAQ",
+      "issues": [
+        "no price returned"
+      ]
+    },
+    {
+      "outbound_date": "2026-11-24",
+      "return_date": "2027-01-01",
+      "price": null,
+      "total_minutes": 500,
+      "stops": 0,
+      "layovers": [],
+      "legs": [
+        {
+          "from": "SYD",
+          "to": "SIN",
+          "dep": "2026-11-24 12:15",
+          "arr": "2026-11-24 17:35",
+          "airline": "Singapore Airlines",
+          "flight": "SQ 232",
+          "cabin": "Economy",
+          "minutes": 500
+        }
+      ],
+      "link": "https://www.google.com/travel/flights?hl=en&gl=us&curr=AUD&tfs=CBwQAhoyEgoyMDI2LTExLTI0KAFABkgSUA5YF2CEB2oHCAESA1NZRHIHCAESA1NJTogBAJABrAIaMhIKMjAyNy0wMS0wMSgBQAZIDFAOWBdghAdqBwgBEgNTSU5yBwgBEgNTWUSIAQCQAawCQAFAAUgBYLgXcAGYAQE&tfu=EgIIAQ",
+      "issues": [
+        "no price returned"
+      ]
+    },
+    {
+      "outbound_date": "2026-11-24",
+      "return_date": "2027-01-01",
+      "price": null,
+      "total_minutes": 490,
+      "stops": 0,
+      "layovers": [],
+      "legs": [
+        {
+          "from": "SYD",
+          "to": "SIN",
+          "dep": "2026-11-24 15:50",
+          "arr": "2026-11-24 21:00",
+          "airline": "Singapore Airlines",
+          "flight": "SQ 222",
+          "cabin": "Economy",
+          "minutes": 490
+        }
+      ],
+      "link": "https://www.google.com/travel/flights?hl=en&gl=us&curr=AUD&tfs=CBwQAhoyEgoyMDI2LTExLTI0KAFABkgSUA5YF2CEB2oHCAESA1NZRHIHCAESA1NJTogBAJABrAIaMhIKMjAyNy0wMS0wMSgBQAZIDFAOWBdghAdqBwgBEgNTSU5yBwgBEgNTWUSIAQCQAawCQAFAAUgBYLgXcAGYAQE&tfu=EgIIAQ",
+      "issues": [
+        "no price returned"
+      ]
     }
   ],
   "errors": []
