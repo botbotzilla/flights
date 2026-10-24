@@ -1,0 +1,55 @@
+{
+  "_note": "Hand-built from the example responses in SerpApi's Google Flights docs (field names and values as shown there). Not a live API response. Missing durations were filled so each total equals legs plus layovers.",
+  "search_metadata": { "status": "Success", "google_flights_url": "https://www.google.com/travel/flights?hl=en" },
+  "best_flights": [
+    {
+      "flights": [
+        { "departure_airport": { "id": "PEK", "time": "2023-10-03 15:10" }, "arrival_airport": { "id": "HND", "time": "2023-10-03 19:35" }, "duration": 205, "airline": "ANA", "flight_number": "NH 962" },
+        { "departure_airport": { "id": "HND", "time": "2023-10-03 21:05" }, "arrival_airport": { "id": "LAX", "time": "2023-10-03 15:10" }, "duration": 605, "airline": "ANA", "flight_number": "NH 126", "overnight": true },
+        { "departure_airport": { "id": "LAX", "time": "2023-10-03 19:01" }, "arrival_airport": { "id": "AUS", "time": "2023-10-03 23:59" }, "duration": 178, "airline": "United", "flight_number": "UA 2175" }
+      ],
+      "layovers": [{ "duration": 90, "id": "HND" }, { "duration": 231, "id": "LAX" }],
+      "total_duration": 1309,
+      "price": 2512
+    },
+    {
+      "flights": [
+        { "departure_airport": { "id": "PEK", "time": "2023-10-03 10:40" }, "arrival_airport": { "id": "ICN", "time": "2023-10-03 13:50" }, "duration": 130, "airline": "Asiana", "flight_number": "OZ 332" },
+        { "departure_airport": { "id": "ICN", "time": "2023-10-03 20:55" }, "arrival_airport": { "id": "SFO", "time": "2023-10-03 15:30" }, "duration": 635, "airline": "Asiana", "flight_number": "OZ 212", "overnight": true },
+        { "departure_airport": { "id": "SFO", "time": "2023-10-04 07:40" }, "arrival_airport": { "id": "AUS", "time": "2023-10-04 13:10" }, "duration": 210, "airline": "Alaska", "flight_number": "AS 512" }
+      ],
+      "layovers": [{ "duration": 425, "id": "ICN" }, { "duration": 970, "id": "SFO", "overnight": true }],
+      "total_duration": 2370,
+      "price": 2513
+    },
+    {
+      "flights": [
+        { "departure_airport": { "id": "CDG", "time": "2024-03-20 18:50" }, "arrival_airport": { "id": "IST", "time": "2024-03-21 00:20" }, "duration": 210, "airline": "Turkish Airlines", "flight_number": "TK 1828" },
+        { "departure_airport": { "id": "IST", "time": "2024-03-21 08:00" }, "arrival_airport": { "id": "LAX", "time": "2024-03-21 11:55" }, "duration": 835, "airline": "Turkish Airlines", "flight_number": "TK 179" }
+      ],
+      "layovers": [{ "duration": 460, "id": "IST", "overnight": true }],
+      "total_duration": 1505,
+      "price": 887
+    }
+  ],
+  "other_flights": [
+    {
+      "flights": [
+        { "departure_airport": { "id": "ORY", "time": "2024-03-20 07:00" }, "arrival_airport": { "id": "LGW", "time": "2024-03-20 07:10" }, "duration": 70, "airline": "Vueling", "flight_number": "VY 6942" },
+        { "departure_airport": { "id": "LGW", "time": "2024-03-20 10:35" }, "arrival_airport": { "id": "LAX", "time": "2024-03-20 15:10" }, "duration": 695, "airline": "Norse Atlantic UK", "flight_number": "Z0 711" }
+      ],
+      "layovers": [{ "duration": 205, "id": "LGW" }],
+      "total_duration": 970,
+      "price": 890
+    },
+    {
+      "flights": [
+        { "departure_airport": { "id": "CDG", "time": "2024-03-20 13:15" }, "arrival_airport": { "id": "DUB", "time": "2024-03-20 14:05" }, "duration": 110, "airline": "Aer Lingus", "flight_number": "EI 525" },
+        { "departure_airport": { "id": "DUB", "time": "2024-03-20 15:20" }, "arrival_airport": { "id": "LAX", "time": "2024-03-20 19:35" }, "duration": 675, "airline": "Aer Lingus", "flight_number": "EI 69" }
+      ],
+      "layovers": [{ "duration": 75, "id": "DUB" }],
+      "total_duration": 860,
+      "price": 1240
+    }
+  ]
+}

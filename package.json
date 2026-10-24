@@ -1,0 +1,8 @@
+{
+  "name": "flights",
+  "private": true,
+  "description": "Flight search page and search job (SerpApi Google Flights)",
+  "scripts": {
+    "test": "node --test"
+  }
+}

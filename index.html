@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flight search</title>
+<style>
+  :root { color-scheme: light dark; --bg:#f6f7f9; --card:#fff; --ink:#1b1f24; --mute:#5b6570; --line:#d9dee4; --accent:#0b5cad; --bad:#b3261e; --good:#1b7a3a; --warnbg:#fdecea; --okbg:#e8f5ec; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#14171a; --card:#1d2227; --ink:#e8ebee; --mute:#9aa5b0; --line:#323a42; --accent:#6ab0f3; --bad:#f2827a; --good:#6fcf8e; --warnbg:#3a1f1d; --okbg:#173022; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width:1040px; margin:0 auto; padding:20px 16px 60px; }
+  h1 { font-size:22px; margin:0 0 4px; }
+  h2 { font-size:17px; margin:28px 0 8px; }
+  .sub, .hint, small { color:var(--mute); }
+  .hint { font-size:12.5px; margin-top:3px; }
+  fieldset { background:var(--card); border:1px solid var(--line); border-radius:8px; margin:14px 0; padding:12px 14px 14px; }
+  legend { font-weight:600; padding:0 6px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:10px 14px; }
+  label { display:block; font-size:13px; color:var(--mute); }
+  input, select, button { font:inherit; }
+  input, select { width:100%; margin-top:3px; padding:7px 8px; border:1px solid var(--line); border-radius:6px; background:var(--bg); color:var(--ink); }
+  .hours input { width:64px; display:inline-block; }
+  .hours span { color:var(--mute); margin:0 4px; }
+  .hours > div { margin:6px 0; }
+  .hours b { display:inline-block; min-width:140px; font-weight:500; color:var(--ink); }
+  button { padding:8px 14px; border-radius:6px; border:1px solid var(--line); background:var(--card); color:var(--ink); cursor:pointer; }
+  button.primary { background:var(--accent); border-color:var(--accent); color:#fff; font-weight:600; }
+  @media (prefers-color-scheme: dark) { button.primary { color:#0c1116; } }
+  button:disabled { opacity:.45; cursor:not-allowed; }
+  .bar { position:sticky; bottom:0; background:var(--bg); padding:10px 0; border-top:1px solid var(--line); display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+  #count { font-weight:600; }
+  #count.bad { color:var(--bad); }
+  #errors { color:var(--bad); margin:6px 0 0; padding-left:18px; font-size:13.5px; }
+  #errors:empty { display:none; }
+  #status { color:var(--mute); }
+  #status.bad { color:var(--bad); }
+  details { margin-top:10px; color:var(--mute); font-size:13.5px; }
+  summary { cursor:pointer; color:var(--ink); }
+  .banner { background:var(--warnbg); border:1px solid var(--bad); border-radius:6px; padding:8px 10px; margin:8px 0; }
+  .tablewrap { overflow-x:auto; }
+  table { border-collapse:collapse; width:100%; background:var(--card); border:1px solid var(--line); }
+  th, td { text-align:left; vertical-align:top; padding:7px 9px; border-bottom:1px solid var(--line); font-size:13.5px; }
+  th { color:var(--mute); font-weight:600; white-space:nowrap; }
+  td.price { font-weight:700; white-space:nowrap; }
+  .ok { color:var(--good); font-weight:600; }
+  .flag { color:var(--bad); }
+  tr.flagged { background:var(--warnbg); }
+  tr.clean { background:var(--okbg); }
+  ul.plain { margin:0; padding:0; list-style:none; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Flight search</h1>
+  <p class="sub">Set the search, check the call count, run it. Results come from SerpApi's Google Flights endpoint, run by a GitHub Actions job.</p>
+
+  <form id="form" autocomplete="off" onsubmit="return false">
+    <fieldset>
+      <legend>Route and dates</legend>
+      <div class="grid">
+        <label>From (airport codes)<input id="from" value="SIN" placeholder="SIN"></label>
+        <label>To (airport codes)<input id="to" placeholder="e.g. SYD"></label>
+        <label>Leave on or after<input id="outStart" type="date"></label>
+        <label>Leave on or before<input id="outEnd" type="date"></label>
+        <label>Return on or after<input id="retStart" type="date"></label>
+        <label>Return on or before<input id="retEnd" type="date"></label>
+      </div>
+      <p class="hint">Up to 10 airport codes per box, comma separated. An empty "before" date means the same day as "after", so two single dates is one search.</p>
+    </fieldset>
+
+    <fieldset>
+      <legend>Passengers and price</legend>
+      <div class="grid">
+        <label>Adults<input id="adults" type="number" min="1" max="9" value="1"></label>
+        <label>Children<input id="children" type="number" min="0" max="8" value="0"></label>
+        <label>Currency<input id="currency" value="SGD" maxlength="3"></label>
+        <label>Stops
+          <select id="stops">
+            <option value="0">Any</option>
+            <option value="1">Nonstop only</option>
+            <option value="2" selected>1 stop or fewer</option>
+            <option value="3">2 stops or fewer</option>
+          </select>
+        </label>
+        <label>Max price<input id="maxPrice" type="number" min="1" placeholder="none"></label>
+        <label>Max flight time (hours)<input id="maxHours" type="number" min="0.5" step="0.25" placeholder="none"></label>
+        <label>Shortest stopover (hours)<input id="layMin" type="number" min="0" step="0.25" placeholder="none"></label>
+        <label>Longest stopover (hours)<input id="layMax" type="number" min="0" step="0.25" placeholder="none"></label>
+      </div>
+      <p class="hint">Max price, flight time and stopover are sent to the API and checked again on the results. Whether the price covers all passengers is not confirmed yet.</p>
+    </fieldset>
+
+    <fieldset class="hours">
+      <legend>Time windows (hour of day, 0 to 23)</legend>
+      <div>
+        <b>Outbound departs</b> from <input id="oDepFrom" type="number" min="0" max="23"><span>to</span><input id="oDepTo" type="number" min="0" max="23">
+        <b style="margin-left:16px">arrives</b> from <input id="oArrFrom" type="number" min="0" max="23"><span>to</span><input id="oArrTo" type="number" min="0" max="23">
+      </div>
+      <div>
+        <b>Return departs</b> from <input id="rDepFrom" type="number" min="0" max="23"><span>to</span><input id="rDepTo" type="number" min="0" max="23">
+        <b style="margin-left:16px">arrives</b> from <input id="rArrFrom" type="number" min="0" max="23"><span>to</span><input id="rArrTo" type="number" min="0" max="23">
+      </div>
+      <p class="hint">Each number is the start of an hour, and the "to" hour is included: 19 to 23 means 7:00 pm to 11:59 pm, and arrives 0 to 0 means before 1:00 am. Leave a pair empty for no limit. Return windows are applied by the API only; return flights are not shown below.</p>
+    </fieldset>
+
+    <fieldset>
+      <legend>Run settings</legend>
+      <div class="grid">
+        <label>Max API calls per run<input id="maxCalls" type="number" min="1" max="50" value="10"></label>
+        <label>Results to keep<input id="topN" type="number" min="1" max="50" value="5"></label>
+        <label>GitHub token (for the Run button)<input id="token" type="password" placeholder="github_pat_..." autocomplete="off"></label>
+        <label style="align-self:end"><input id="remember" type="checkbox" style="width:auto;margin-right:6px" checked>Remember token on this device</label>
+      </div>
+      <details>
+        <summary>How to get the token</summary>
+        <p>GitHub, Settings, Developer settings, Personal access tokens, Fine-grained tokens, Generate new token. Pick only the repository <b>botbotzilla/flights</b> and set Repository permissions, Actions, to Read and write. Paste it above. It stays in this browser and is only sent to GitHub. Menu names may differ slightly on GitHub's side.</p>
+      </details>
+    </fieldset>
+
+    <div class="bar">
+      <button id="run" class="primary" type="button">Run search</button>
+      <button id="refresh" type="button">Refresh results</button>
+      <button id="copy" type="button">Copy config</button>
+      <span id="count"></span>
+    </div>
+    <ul id="errors"></ul>
+    <p id="status" role="status"></p>
+  </form>
+
+  <h2>Results</h2>
+  <div id="results"><p class="sub">Loading…</p></div>
+</main>
+<script src="core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
