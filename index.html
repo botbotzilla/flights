@@ -28,11 +28,14 @@
   button.primary { background:var(--accent); border-color:var(--accent); color:#fff; font-weight:600; }
   @media (prefers-color-scheme: dark) { button.primary { color:#0c1116; } }
   button:disabled { opacity:.45; cursor:not-allowed; }
-  .bar { position:sticky; bottom:0; background:var(--bg); padding:10px 0; border-top:1px solid var(--line); display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+  .bar { position:sticky; bottom:0; background:var(--bg); padding:10px 0; border-top:1px solid var(--line); display:flex; gap:10px; flex-wrap:wrap; align-items:center; max-height:45vh; overflow-y:auto; }
   #count { font-weight:600; }
   #count.bad { color:var(--bad); }
-  #errors { color:var(--bad); margin:6px 0 0; padding-left:18px; font-size:13.5px; }
+  #errors { flex-basis:100%; color:var(--bad); margin:0; padding-left:18px; font-size:13.5px; }
   #errors:empty { display:none; }
+  .checks { display:flex; gap:18px; flex-wrap:wrap; margin-top:10px; }
+  .checks label { display:flex; align-items:center; gap:6px; color:var(--ink); }
+  .checks input { width:auto; margin:0; }
   #status { color:var(--mute); }
   #status.bad { color:var(--bad); }
   details { margin-top:10px; color:var(--mute); font-size:13.5px; }
@@ -91,17 +94,45 @@
       <p class="hint">Max price, flight time and stopover are sent to the API and checked again on the results. Whether the price covers all passengers is not confirmed yet.</p>
     </fieldset>
 
+    <fieldset>
+      <legend>Airlines and cabin</legend>
+      <div class="grid">
+        <label>Cabin
+          <select id="cabin">
+            <option value="1" selected>Economy</option>
+            <option value="2">Premium economy</option>
+            <option value="3">Business</option>
+            <option value="4">First</option>
+          </select>
+        </label>
+        <label>Airlines
+          <select id="airMode">
+            <option value="any" selected>Any airline</option>
+            <option value="include">Only these</option>
+            <option value="exclude">Exclude these</option>
+          </select>
+        </label>
+        <label>Airline codes<input id="airCodes" placeholder="e.g. SQ, QF"></label>
+      </div>
+      <div class="checks">
+        <label><input type="checkbox" id="alStar">Star Alliance</label>
+        <label><input type="checkbox" id="alSky">SkyTeam</label>
+        <label><input type="checkbox" id="alOne">Oneworld</label>
+      </div>
+      <p class="hint">Used when Airlines is "Only these" or "Exclude these". Type 2-letter airline codes (SQ is Singapore Airlines, QF is Qantas) and tick any alliances. The API applies these filters. The results table can't re-check them, so look at the flights column. The cabin is shown on each flight.</p>
+    </fieldset>
+
     <fieldset class="hours">
       <legend>Time windows (hour of day, 0 to 23)</legend>
       <div>
-        <b>Outbound departs</b> from <input id="oDepFrom" type="number" min="0" max="23"><span>to</span><input id="oDepTo" type="number" min="0" max="23">
-        <b style="margin-left:16px">arrives</b> from <input id="oArrFrom" type="number" min="0" max="23"><span>to</span><input id="oArrTo" type="number" min="0" max="23">
+        <b>Outbound departs</b> from <input id="oDepFrom" type="number" min="0" max="23" placeholder="any"><span>to</span><input id="oDepTo" type="number" min="0" max="23" placeholder="any">
+        <b style="margin-left:16px">arrives</b> from <input id="oArrFrom" type="number" min="0" max="23" placeholder="any"><span>to</span><input id="oArrTo" type="number" min="0" max="23" placeholder="any">
       </div>
       <div>
-        <b>Return departs</b> from <input id="rDepFrom" type="number" min="0" max="23"><span>to</span><input id="rDepTo" type="number" min="0" max="23">
-        <b style="margin-left:16px">arrives</b> from <input id="rArrFrom" type="number" min="0" max="23"><span>to</span><input id="rArrTo" type="number" min="0" max="23">
+        <b>Return departs</b> from <input id="rDepFrom" type="number" min="0" max="23" placeholder="any"><span>to</span><input id="rDepTo" type="number" min="0" max="23" placeholder="any">
+        <b style="margin-left:16px">arrives</b> from <input id="rArrFrom" type="number" min="0" max="23" placeholder="any"><span>to</span><input id="rArrTo" type="number" min="0" max="23" placeholder="any">
       </div>
-      <p class="hint">Each number is the start of an hour, and the "to" hour is included: 19 to 23 means 7:00 pm to 11:59 pm, and arrives 0 to 0 means before 1:00 am. Leave a pair empty for no limit. Return windows are applied by the API only; return flights are not shown below.</p>
+      <p class="hint">Fill one box or both. An empty "from" means from midnight, and an empty "to" means until 11:59 pm. Each number is the start of an hour and the "to" hour is included: departs from 7 means after 7:00 am, and arrives to 0 means before 1:00 am. If "from" is later than "to" the window crosses midnight: arrives from 6 to 0 means 6:00 am through 12:59 am the next morning. Outbound windows that cross midnight are checked on the results here, not by the API. Return windows are applied by the API only, and can't cross midnight yet; return flights are not shown below.</p>
     </fieldset>
 
     <fieldset>
@@ -123,8 +154,8 @@
       <button id="refresh" type="button">Refresh results</button>
       <button id="copy" type="button">Copy config</button>
       <span id="count"></span>
+      <ul id="errors"></ul>
     </div>
-    <ul id="errors"></ul>
     <p id="status" role="status"></p>
   </form>
 

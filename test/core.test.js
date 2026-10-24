@@ -66,8 +66,15 @@ test("validate: rejects bad input", () => {
   bad({ outbound: { start: "2026-02-31", end: "2026-03-02" } }, /real dates/);
   bad({ return: { start: "2027-01-10", end: "2027-01-01" } }, /start is after end/);
   bad({ layover: { min: 300, max: 60 } }, /minimum is above maximum/);
-  bad({ outboundTimes: { depFrom: 19, depTo: null, arrFrom: null, arrTo: null } }, /fill both hours or neither/);
-  bad({ outboundTimes: { depFrom: 20, depTo: 7, arrFrom: null, arrTo: null } }, /after "to" hour/);
+  bad({ outboundTimes: { depFrom: 24, depTo: null, arrFrom: null, arrTo: null } }, /whole numbers 0-23/);
+  bad({ outboundTimes: { depFrom: null, depTo: null, arrFrom: 1.5, arrTo: null } }, /whole numbers 0-23/);
+  bad({ returnTimes: { depFrom: null, depTo: null, arrFrom: 6, arrTo: 0 } }, /Return arrival window crosses midnight/);
+  bad({ travelClass: 7 }, /Cabin/);
+  bad({ airlines: { mode: "maybe", codes: [] } }, /Airlines: pick/);
+  bad({ airlines: { mode: "include", codes: [] } }, /add at least one/);
+  bad({ airlines: { mode: "exclude", codes: ["SQX"] } }, /2-character codes/);
+  bad({ airlines: { mode: "include", codes: ["sq"] } }, /2-character codes/);
+  bad({ airlines: { mode: "include", codes: Array(21).fill("SQ") } }, /20 at most/);
   bad({ maxCalls: 100 }, /Max calls/);
   bad({ outbound: { start: "2027-01-05", end: "2027-01-05" }, return: { start: "2027-01-01", end: "2027-01-02" } }, /No date pairs/);
 });
@@ -78,6 +85,78 @@ test("times string follows SerpApi's format", () => {
   assert.equal(core.timesString({ depFrom: 4, depTo: 18, arrFrom: 3, arrTo: 19 }), "4,18,3,19");
   assert.equal(core.timesString({ depFrom: null, depTo: null, arrFrom: null, arrTo: null }), null);
   assert.equal(core.timesString(null), null);
+});
+
+test("times string: one-sided bounds are open-ended, whole day is no limit", () => {
+  assert.equal(core.timesString({ depFrom: 6, depTo: null, arrFrom: null, arrTo: null }), "6,23"); // depart after 6 am
+  assert.equal(core.timesString({ depFrom: null, depTo: null, arrFrom: null, arrTo: 0 }), "0,23,0,0"); // arrive before 1 am only
+  assert.equal(core.timesString({ depFrom: null, depTo: null, arrFrom: null, arrTo: 8 }), "0,23,0,8"); // arrive before 9 am
+  assert.equal(core.timesString({ depFrom: 0, depTo: 23, arrFrom: null, arrTo: null }), null);
+});
+
+test("times string: a window that crosses midnight is not sent to the API", () => {
+  assert.equal(core.timesString({ depFrom: null, depTo: null, arrFrom: 6, arrTo: 0 }), null);
+  assert.equal(core.timesString({ depFrom: 6, depTo: null, arrFrom: 6, arrTo: 0 }), "6,23"); // departure part still sent
+});
+
+test("validate: one-sided and midnight-crossing outbound windows are allowed", () => {
+  const ok = (o) => assert.deepEqual(core.validateConfig(cfg({ ...small, ...o }), TODAY), [], JSON.stringify(o));
+  ok({ outboundTimes: { depFrom: null, depTo: null, arrFrom: null, arrTo: 0 } }); // arrive before 1 am, any departure
+  ok({ outboundTimes: { depFrom: 6, depTo: null, arrFrom: 6, arrTo: 0 } }); // depart after 6 am, arrive by 12:59 am next morning
+  ok({ returnTimes: { depFrom: null, depTo: null, arrFrom: null, arrTo: 8 } }); // return arrives before 9 am
+});
+
+// Crafted option: depart SYD 09:00, arrive SIN at the given local time.
+const arriving = (hhmm) => core.normalizeOption({
+  flights: [{ departure_airport: { id: "SYD", time: "2026-11-24 09:00" }, arrival_airport: { id: "SIN", time: "2026-11-24 " + hhmm }, duration: 480 }],
+  layovers: [], total_duration: 480, price: 500,
+}, ["2026-11-24", "2027-01-05"], null);
+
+test("rules: 'depart after 6 am, arrive 06:00 through 00:59' keeps late arrivals and drops 01:00 to 05:59", () => {
+  const c = cfg({ outboundTimes: { depFrom: 6, depTo: null, arrFrom: 6, arrTo: 0 } });
+  const verdict = (hhmm) => core.checkRules(arriving(hhmm), c).length === 0;
+  assert.equal(verdict("23:30"), true);
+  assert.equal(verdict("15:10"), true);
+  assert.equal(verdict("06:00"), true);
+  assert.equal(verdict("00:30"), true);
+  assert.equal(verdict("00:59"), true);
+  assert.equal(verdict("01:00"), false);
+  assert.equal(verdict("03:10"), false);
+  assert.equal(verdict("05:59"), false);
+});
+
+test("rules: 'arrive before 1 am' alone (arrives to = 0) allows only 00:00 to 00:59", () => {
+  const c = cfg({ outboundTimes: { depFrom: null, depTo: null, arrFrom: null, arrTo: 0 } });
+  assert.equal(core.checkRules(arriving("00:40"), c).length, 0);
+  assert.equal(core.checkRules(arriving("01:00"), c).length, 1);
+  assert.equal(core.checkRules(arriving("14:00"), c).length, 1);
+});
+
+test("rules: one-sided and midnight-crossing windows on the sample itineraries", () => {
+  assert.deepEqual(flagged({ outboundTimes: { depFrom: null, depTo: null, arrFrom: null, arrTo: 12 } }), [0, 1, 3, 4]); // arrive by 12:59
+  assert.deepEqual(flagged({ outboundTimes: { depFrom: 14, depTo: null, arrFrom: null, arrTo: null } }), [1, 3, 4]); // depart from 14:00
+  assert.deepEqual(flagged({ outboundTimes: { depFrom: null, depTo: null, arrFrom: 12, arrTo: 0 } }), [2]); // IST lands 11:55
+  assert.deepEqual(flagged({ outboundTimes: { depFrom: 6, depTo: null, arrFrom: 6, arrTo: 0 } }), []);
+});
+
+test("params: airline, alliance and cabin filters map to SerpApi names", () => {
+  const pair = ["2026-11-24", "2027-01-05"];
+  const inc = core.buildParams(cfg({ airlines: { mode: "include", codes: ["STAR_ALLIANCE", "SQ", "QF"] }, travelClass: 3 }), pair);
+  assert.equal(inc.include_airlines, "STAR_ALLIANCE,SQ,QF");
+  assert.ok(!("exclude_airlines" in inc));
+  assert.equal(inc.travel_class, "3");
+  const exc = core.buildParams(cfg({ airlines: { mode: "exclude", codes: ["ONEWORLD"] } }), pair);
+  assert.equal(exc.exclude_airlines, "ONEWORLD");
+  assert.ok(!("include_airlines" in exc));
+  const none = core.buildParams(cfg({ airlines: { mode: "any", codes: ["SQ"] }, travelClass: 1 }), pair);
+  assert.ok(!("include_airlines" in none) && !("exclude_airlines" in none) && !("travel_class" in none));
+});
+
+test("validate: valid airline and cabin choices pass", () => {
+  const ok = (o) => assert.deepEqual(core.validateConfig(cfg({ ...small, ...o }), TODAY), [], JSON.stringify(o));
+  ok({ airlines: { mode: "include", codes: ["SQ", "QF", "STAR_ALLIANCE", "9W"] }, travelClass: 2 });
+  ok({ airlines: { mode: "exclude", codes: ["ONEWORLD", "SKYTEAM"] }, travelClass: 4 });
+  ok({ airlines: { mode: "any", codes: [] } });
 });
 
 test("params: filters map to SerpApi names, blanks are omitted, no api_key", () => {

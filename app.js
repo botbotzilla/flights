@@ -6,7 +6,8 @@
   const FREE_PER_MONTH = 250; // SerpApi free plan, per its docs page
   const FIELDS = ["from", "to", "outStart", "outEnd", "retStart", "retEnd", "adults", "children", "currency", "stops",
     "maxPrice", "maxHours", "layMin", "layMax", "oDepFrom", "oDepTo", "oArrFrom", "oArrTo", "rDepFrom", "rDepTo",
-    "rArrFrom", "rArrTo", "maxCalls", "topN"];
+    "rArrFrom", "rArrTo", "maxCalls", "topN", "cabin", "airMode", "airCodes"];
+  const CHECKS = ["alStar", "alSky", "alOne"];
 
   const $ = (id) => document.getElementById(id);
   const today = () => new Date().toISOString().slice(0, 10);
@@ -22,6 +23,13 @@
   const times = (p) => ({ depFrom: num(p + "DepFrom"), depTo: num(p + "DepTo"), arrFrom: num(p + "ArrFrom"), arrTo: num(p + "ArrTo") });
   const codes = (id) => $(id).value.toUpperCase().replace(/[^A-Z,]/g, "");
 
+  function airlines() {
+    const alliances = [["alStar", "STAR_ALLIANCE"], ["alSky", "SKYTEAM"], ["alOne", "ONEWORLD"]]
+      .filter(([id]) => $(id).checked).map(([, code]) => code);
+    const typed = $("airCodes").value.toUpperCase().split(/[\s,]+/).filter(Boolean);
+    return { mode: $("airMode").value, codes: [...new Set([...alliances, ...typed])] };
+  }
+
   function readForm() {
     const os = $("outStart").value, rs = $("retStart").value;
     return {
@@ -31,6 +39,7 @@
       adults: num("adults"), children: num("children"),
       currency: $("currency").value.trim().toUpperCase(),
       stops: Number($("stops").value),
+      travelClass: Number($("cabin").value), airlines: airlines(),
       maxPrice: num("maxPrice"), maxDuration: mins("maxHours"),
       layover: { min: mins("layMin"), max: mins("layMax") },
       outboundTimes: times("o"), returnTimes: times("r"),
@@ -62,7 +71,10 @@
     const list = $("errors");
     list.replaceChildren(...errs.map((e) => el("li", null, e)));
     $("run").disabled = errs.length > 0;
-    store.set("flights.form", JSON.stringify(Object.fromEntries(FIELDS.map((f) => [f, $(f).value]))));
+    store.set("flights.form", JSON.stringify({
+      ...Object.fromEntries(FIELDS.map((f) => [f, $(f).value])),
+      ...Object.fromEntries(CHECKS.map((f) => [f, $(f).checked])),
+    }));
     return c;
   }
 
@@ -102,7 +114,7 @@
           el("td", null, String(r.stops)),
           el("td", null, r.total_minutes === null ? "n/a" : C.fmtMin(r.total_minutes)),
           el("td", null, el("ul", { class: "plain" }, r.legs.map((l) =>
-            el("li", null, `${l.from} ${when(l.dep)} to ${l.to} ${when(l.arr)} · ${l.airline || ""} ${l.flight || ""}`)))),
+            el("li", null, `${l.from} ${when(l.dep)} to ${l.to} ${when(l.arr)} · ${l.airline || ""} ${l.flight || ""}${l.cabin ? " · " + l.cabin : ""}`)))),
           el("td", null, r.layovers.length ? el("ul", { class: "plain" }, r.layovers.map((l) =>
             el("li", null, `${l.airport} ${C.fmtMin(l.minutes)}${l.overnight ? " overnight" : ""}`))) : "none"),
           el("td", null, clean ? el("span", { class: "ok" }, "OK")
@@ -163,7 +175,13 @@
 
   // ---- start up ----
   const saved = store.get("flights.form");
-  if (saved) { try { const o = JSON.parse(saved); for (const f of FIELDS) if (typeof o[f] === "string") $(f).value = o[f]; } catch { /* ignore bad saved data */ } }
+  if (saved) {
+    try {
+      const o = JSON.parse(saved);
+      for (const f of FIELDS) if (typeof o[f] === "string") $(f).value = o[f];
+      for (const f of CHECKS) if (typeof o[f] === "boolean") $(f).checked = o[f];
+    } catch { /* ignore bad saved data */ }
+  }
   const tok = store.get("flights.token");
   if (tok) $("token").value = tok;
 
