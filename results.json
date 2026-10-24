@@ -1,0 +1,154 @@
+{
+  "generatedAt": "2026-10-24T14:07:53.821Z",
+  "sample": false,
+  "config": {
+    "from": "SYD",
+    "to": "SIN",
+    "outbound": {
+      "start": "2026-11-23",
+      "end": "2026-11-23"
+    },
+    "return": {
+      "start": "2026-12-31",
+      "end": "2027-01-01"
+    },
+    "adults": 2,
+    "children": 0,
+    "currency": "AUD",
+    "stops": 2,
+    "maxPrice": 3000,
+    "maxDuration": 900,
+    "layover": {
+      "min": 0,
+      "max": 300
+    },
+    "outboundTimes": {
+      "depFrom": null,
+      "depTo": null,
+      "arrFrom": null,
+      "arrTo": null
+    },
+    "returnTimes": {
+      "depFrom": null,
+      "depTo": null,
+      "arrFrom": null,
+      "arrTo": null
+    },
+    "maxCalls": 5,
+    "topN": 5
+  },
+  "counts": {
+    "pairs": 2,
+    "calls": 2,
+    "options": 18,
+    "passing": 12
+  },
+  "results": [
+    {
+      "outbound_date": "2026-11-23",
+      "return_date": "2026-12-31",
+      "price": 1665,
+      "total_minutes": 495,
+      "stops": 0,
+      "layovers": [],
+      "legs": [
+        {
+          "from": "SYD",
+          "to": "SIN",
+          "dep": "2026-11-23 20:05",
+          "arr": "2026-11-24 01:20",
+          "airline": "Scoot",
+          "flight": "TR 43",
+          "minutes": 495
+        }
+      ],
+      "link": "https://www.google.com/travel/flights?hl=en&gl=us&curr=AUD&tfs=CBwQAhoqEgoyMDI2LTExLTIzKAFghAdqBwgBEgNTWURyBwgBEgNTSU6IAQCQAawCGioSCjIwMjYtMTItMzEoAWCEB2oHCAESA1NJTnIHCAESA1NZRIgBAJABrAJAAUABSAFguBdwAZgBAQ&tfu=EgIIAQ",
+      "issues": []
+    },
+    {
+      "outbound_date": "2026-11-23",
+      "return_date": "2027-01-01",
+      "price": 1791,
+      "total_minutes": 495,
+      "stops": 0,
+      "layovers": [],
+      "legs": [
+        {
+          "from": "SYD",
+          "to": "SIN",
+          "dep": "2026-11-23 20:05",
+          "arr": "2026-11-24 01:20",
+          "airline": "Scoot",
+          "flight": "TR 43",
+          "minutes": 495
+        }
+      ],
+      "link": "https://www.google.com/travel/flights?hl=en&gl=us&curr=AUD&tfs=CBwQAhoqEgoyMDI2LTExLTIzKAFghAdqBwgBEgNTWURyBwgBEgNTSU6IAQCQAawCGioSCjIwMjctMDEtMDEoAWCEB2oHCAESA1NJTnIHCAESA1NZRIgBAJABrAJAAUABSAFguBdwAZgBAQ&tfu=EgIIAQ",
+      "issues": []
+    },
+    {
+      "outbound_date": "2026-11-23",
+      "return_date": "2026-12-31",
+      "price": 2274,
+      "total_minutes": 485,
+      "stops": 0,
+      "layovers": [],
+      "legs": [
+        {
+          "from": "SYD",
+          "to": "SIN",
+          "dep": "2026-11-23 16:20",
+          "arr": "2026-11-23 21:25",
+          "airline": "British Airways",
+          "flight": "BA 16",
+          "minutes": 485
+        }
+      ],
+      "link": "https://www.google.com/travel/flights?hl=en&gl=us&curr=AUD&tfs=CBwQAhoqEgoyMDI2LTExLTIzKAFghAdqBwgBEgNTWURyBwgBEgNTSU6IAQCQAawCGioSCjIwMjYtMTItMzEoAWCEB2oHCAESA1NJTnIHCAESA1NZRIgBAJABrAJAAUABSAFguBdwAZgBAQ&tfu=EgIIAQ",
+      "issues": []
+    },
+    {
+      "outbound_date": "2026-11-23",
+      "return_date": "2026-12-31",
+      "price": 2358,
+      "total_minutes": 500,
+      "stops": 0,
+      "layovers": [],
+      "legs": [
+        {
+          "from": "SYD",
+          "to": "SIN",
+          "dep": "2026-11-23 16:10",
+          "arr": "2026-11-23 21:30",
+          "airline": "Qantas",
+          "flight": "QF 255",
+          "minutes": 500
+        }
+      ],
+      "link": "https://www.google.com/travel/flights?hl=en&gl=us&curr=AUD&tfs=CBwQAhoqEgoyMDI2LTExLTIzKAFghAdqBwgBEgNTWURyBwgBEgNTSU6IAQCQAawCGioSCjIwMjYtMTItMzEoAWCEB2oHCAESA1NJTnIHCAESA1NZRIgBAJABrAJAAUABSAFguBdwAZgBAQ&tfu=EgIIAQ",
+      "issues": []
+    },
+    {
+      "outbound_date": "2026-11-23",
+      "return_date": "2026-12-31",
+      "price": 2358,
+      "total_minutes": 485,
+      "stops": 0,
+      "layovers": [],
+      "legs": [
+        {
+          "from": "SYD",
+          "to": "SIN",
+          "dep": "2026-11-23 16:30",
+          "arr": "2026-11-23 21:35",
+          "airline": "Qantas",
+          "flight": "QF 1",
+          "minutes": 485
+        }
+      ],
+      "link": "https://www.google.com/travel/flights?hl=en&gl=us&curr=AUD&tfs=CBwQAhoqEgoyMDI2LTExLTIzKAFghAdqBwgBEgNTWURyBwgBEgNTSU6IAQCQAawCGioSCjIwMjYtMTItMzEoAWCEB2oHCAESA1NJTnIHCAESA1NZRIgBAJABrAJAAUABSAFguBdwAZgBAQ&tfu=EgIIAQ",
+      "issues": []
+    }
+  ],
+  "errors": []
+}
